@@ -20,9 +20,9 @@ def parse_input(prompt, valid_options, menu=0, tags_df=None, user_tags=None):
         if new is False:
             print('Invalid input')
         user_input = input(f'{prompt}\n')
+        new = False
         if user_input in valid_options:
             return user_input
-        new = False
 
 def comb_tags(tags, operators_data, input_tags, debug=0):
     combinatory_data = []
