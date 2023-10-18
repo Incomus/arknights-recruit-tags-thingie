@@ -1,2 +1,2 @@
 # arknights_recruit_tags_thingie
-Searches for high rarity operators by combining operator tags and comparing them to individual operator's tags
+Probably reinventing a wheel here, but at the time I couldn't find anything so here.
