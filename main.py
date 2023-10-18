@@ -2,160 +2,29 @@ print('importing...')
 print('')
 from pandas import DataFrame as DataFrame
 import os
-os.system('mode con: cols=100 lines=800')
-tags = [['None1', 0],
-        ['None2', 0],
-        ['AoE', 0], # 2
-        ['DP-Recovery', 0], # 3
-        ['Nuker', 1], # 4
-        ['Starter', 0], # 5
-        ['Crowd-Control', 2], # 6
-        ['DPS', 0], # 7
-        ['Robot', 0], # 8
-        ['Summon', 2], # 9
-        ['Debuff', 1], # 10
-        ['Fast-Redeploy', 1], # 11
-        ['Shift', 1], # 12
-        ['Support', 1], # 13
-        ['Defense', 0], # 14
-        ['Healing', 0], # 15
-        ['Slow', 0], # 16
-        ['Survival', 0], # 17
-        ['Caster', 0], # 18
-        ['Sniper', 0], # 19
-        ['Defender', 0], # 20
-        ['Specialist', 1], # 21
-        ['Guard', 0], # 22
-        ['Supporter', 0], # 23
-        ['Medic', 0], # 24
-        ['Vanguard', 0], # 25
-        ['Melee', 0], # 26
-        ['Ranged', 0], # 27
-        ['Senior', 2], # 28
-        ['Top', 3]] # 29
-operators_data = [
-    [3, 'Phantom', [10, 6, 5, 20, 25, 28]],
-    [3, 'Weedy', [11, 6, 5, 20, 25, 28]],
-    [3, 'Ceobe', [6, 5, 17, 26, 28]],
-    [3, 'Rosa', [6, 5, 18, 26, 28]],
-    [1, 'Podenco', [15, 14, 22, 26]],
-    [2, 'Tsukinogi', [12, 16, 22, 26, 27]],
-    [2, 'Leonhardt', [1, 3, 17, 26, 27]],
-    [2, 'Asbestos', [6, 13, 19, 25, 27]],
-    [2, 'Elysium', [2, 12, 24, 25, 27]],
-    [0, '12F', [4, 17, 26]],
-    [0, 'Adnachiel', [6, 18, 26]],
-    [0, 'Ansel', [14, 23, 26]],
-    [0, 'Beagle', [13, 19, 25]],
-    [0, 'Catapult', [1, 18, 26]],
-    [0, 'Durin', [4, 17, 26]],
-    [0, 'Fang', [2, 24, 25]],
-    [0, 'Hibiscus', [14, 23, 26]],
-    [0, 'Kroos', [6, 18, 26]],
-    [0, 'Lava', [1, 17, 26]],
-    [0, 'Melantha', [6, 16, 21, 25]],
-    [0, 'Midnight', [6, 21, 25]],
-    [0, 'Noir Corne', [4, 19, 25]],
-    [0, 'Orchid', [15, 22, 26]],
-    [0, 'Plume', [6, 2, 24, 25]],
-    [0, 'Popukar', [1, 16, 21, 25]],
-    [0, 'Rangers', [4, 18, 26]],
-    [0, 'Spot', [13, 14, 19, 25]],
-    [0, 'Steward', [6, 17, 26]],
-    [0, 'Vanilla', [2, 24, 25]],
-    [0, 'Yato', [4, 24, 25]],
-    [1, 'Ambriel', [6, 15, 18, 26]],
-    [1, 'Beehunter', [6, 21, 25]],
-    [1, 'Cuora', [13, 19, 25]],
-    [1, 'Dobermann', [6, 12, 21, 25]],
-    [1, 'Earthspirit', [15, 22, 26]],
-    [1, 'Estelle', [1, 16, 21, 25]],
-    [1, 'Frostleaf', [15, 6, 21, 25]],
-    [1, 'Gitano', [1, 17, 26]],
-    [1, 'Gravel', [10, 13, 20, 25]],
-    [1, 'Greyy', [1, 15, 17, 26]],
-    [1, 'Gummy', [13, 14, 19, 25]],
-    [1, 'Haze', [6, 9, 17, 26]],
-    [1, 'Jessica', [6, 16, 18, 26]],
-    [1, 'Matoimaru', [16, 6, 21, 25]],
-    [1, 'Matterhorn', [13, 19, 25]],
-    [1, 'May', [6, 15, 18, 26]],
-    [1, 'Meteor', [6, 9, 18, 26]],
-    [1, 'Mousse', [6, 21, 25]],
-    [1, 'Myrrh', [14, 23, 26]],
-    [1, 'Myrtle', [2, 14, 24, 25]],
-    [1, 'Perfumer', [14, 23, 26]],
-    [1, 'Purestream', [14, 12, 23, 26]],
-    [1, 'Rope', [11, 20, 25]],
-    [1, 'Scavenger', [2, 6, 24, 25]],
-    [1, 'Shaw', [11, 20, 25]],
-    [1, 'Cutter', [3, 6, 21, 25]],
-    [1, 'Shirayuki', [1, 15, 18, 26]],
-    [1, 'Sussurro', [14, 23, 26]],
-    [1, 'Utage', [6, 16, 21, 25]],
-    [1, 'Vermeil', [6, 18, 26]],
-    [1, 'Vigna', [6, 2, 24, 25]],
-    [2, 'Astesia', [6, 13, 21, 25, 27]],
-    [2, 'Blue Poison', [6, 18, 26, 27]],
-    [2, 'Broca', [1, 16, 21, 25, 27]],
-    [-1, 'Castle-3', [12, 7, 21, 25]],
-    [2, 'Shamare', [9, 22, 26, 27]],
-    [2, 'Cliffheart', [11, 6, 20, 25, 27]],
-    [2, 'Croissant', [13, 11, 19, 25, 27]],
-    [2, 'Executor', [1, 18, 26, 27]],
-    [2, 'FEeater', [11, 15, 20, 25, 27]],
-    [2, 'Firewatch', [6, 3, 18, 26, 27]],
-    [2, 'Glacus', [15, 5, 22, 26, 27]],
-    [2, 'GreyThroat', [6, 18, 26, 27]],
-    [2, 'Hung', [13, 14, 19, 25, 27]],
-    [2, 'Indra', [6, 16, 21, 25, 27]],
-    [2, 'Istina', [15, 6, 22, 26, 27]],
-    [-1, 'Justice Knight', [12, 7, 18, 26]],
-    [-1, 'Lancet-2', [14, 7, 23, 26]],
-    [2, 'Leizi', [6, 17, 26, 27]],
-    [2, 'Liskarm', [13, 6, 19, 25, 27]],
-    [2, 'Manticore', [6, 16, 20, 25, 27]],
-    [2, 'Mayer', [8, 5, 22, 26, 27]],
-    [2, 'Meteorite', [1, 9, 18, 26, 27]],
-    [2, 'Nearl', [13, 14, 19, 25, 27]],
-    [2, 'Nightmare', [6, 14, 15, 17, 26, 27]],
-    [2, 'Platinum', [6, 18, 26, 27]],
-    [2, 'Pramanix', [9, 22, 26, 27]],
-    [2, 'Project Red', [10, 5, 20, 25, 27]],
-    [2, 'Provence', [6, 18, 26, 27]],
-    [2, 'Ptilopsis', [14, 12, 23, 26, 27]],
-    [2, 'Reed', [2, 6, 24, 25, 27]],
-    [2, 'Sesa', [1, 9, 18, 26, 27]],
-    [2, 'Silence', [14, 23, 26, 27]],
-    [2, 'Specter', [1, 16, 21, 25, 27]],
-    [2, 'Swire', [6, 12, 21, 25, 27]],
-    [2, 'Texas', [2, 5, 24, 25, 27]],
-    [-1, 'THRM-EX', [3, 7, 20, 25]],
-    [2, 'Vulcan', [16, 13, 6, 19, 25, 27]],
-    [2, 'Waai Fu', [10, 9, 20, 25, 27]],
-    [2, 'Warfarin', [14, 12, 23, 26, 27]],
-    [2, 'Zima', [2, 12, 24, 25, 27]],
-    [3, 'Aak', [6, 12, 20, 26, 28]],
-    [3, 'Bagpipe', [2, 6, 24, 25, 28]],
-    [3, 'Blaze', [6, 16, 21, 25, 28]],
-    [3, 'Chen', [3, 6, 21, 25, 28]],
-    [3, 'Exusiai', [6, 18, 26, 28]],
-    [3, 'Hellagur', [6, 16, 21, 25, 28]],
-    [3, 'Hoshiguma', [6, 13, 19, 25, 28]],
-    [3, 'Ifrit', [1, 9, 17, 26, 28]],
-    [3, 'Magallan', [6, 12, 15, 22, 26, 28]],
-    [3, 'Mostima', [1, 5, 12, 17, 26, 28]],
-    [3, 'Nightingale', [12, 14, 23, 26, 28]],
-    [3, 'Saria', [12, 13, 14, 19, 25, 28]],
-    [3, 'Schwarz', [6, 18, 26, 28]],
-    [3, 'Shining', [12, 14, 23, 26, 28]],
-    [3, 'Siege', [2, 6, 24, 25, 28]],
-    [3, 'SilverAsh', [6, 12, 21, 25, 28]],
-    [3, 'Skadi', [6, 16, 21, 25, 28]]
-]
+import json
+import requests
+
+def load_json(repo_url, json_path):
+    url = f"{repo_url}/raw/main/{json_path}"
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = json.loads(response.text)
+        return data
+
+git_url = 'https://github.com/Incomus/arknights-recruit-tags-thingie'
+
+tags = load_json(git_url, 'tags.json')
+operators_data = load_json(git_url, 'operators.json')
+
+print(tags)
+input()
+
 operators_data.sort()
 operators_data = [[x[0], x[1], [num + 1 for num in x[2]]] for x in operators_data]
 operators_data = [[x[0], x[1], x[2] + [0] + [1]] for x in operators_data]
+os.system('mode con: cols=100 lines=800')
+
 while True:
     user_input = input('Debug? 0/1\n')
     if user_input in ('1', '0'):
@@ -164,14 +33,15 @@ while True:
     print('Invalid input')
     continue
 debug = int(user_input)
+
 def comb_tags(tags, operators_data, input_tags, debug=debug):
     combinatory_data = []
     tags_range = range(len(input_tags))
     tags1_range = [0, *tags_range[2:-2]]
     for tag1_index in tags1_range:
-        tags2_range = tags_range[tag1_index+1:-1]
+        tags2_range = tags_range[tag1_index + 1:-1]
         for tag2_index in tags2_range:
-            tags3_range = tags_range[tag2_index+1:]
+            tags3_range = tags_range[tag2_index + 1:]
             for tag3_index in tags3_range:
                 if debug == 1:
                     if input_tags[tag1_index] == 0 and input_tags[tag2_index] == 1:
@@ -187,8 +57,8 @@ def comb_tags(tags, operators_data, input_tags, debug=debug):
                 match = False
                 for operator_index in range(len(operators_data)):
                     if input_tags[tag1_index] in operators_data[operator_index][2] and \
-                                input_tags[tag2_index] in operators_data[operator_index][2] and \
-                                input_tags[tag3_index] in operators_data[operator_index][2]:
+                            input_tags[tag2_index] in operators_data[operator_index][2] and \
+                            input_tags[tag3_index] in operators_data[operator_index][2]:
                         match = True
                         if operators_data[operator_index][0] == 0:
                             if debug == 1:
@@ -240,12 +110,14 @@ def comb_tags(tags, operators_data, input_tags, debug=debug):
                 else:
                     if debug == 1 and match is False:
                         print('no matches')
-    combinatory_data = [[[ops for ops in x[0] if ops not in [0, 1]], x[1], x[2] ] for x in combinatory_data]
+    combinatory_data = [[[ops for ops in x[0] if ops not in [0, 1]], x[1], x[2]] for x in combinatory_data]
     for point in combinatory_data:
         for i, tag in enumerate(point[0]):
-            point[0][i] = tags[tag][0]
+            point[0][i] = tags[tag]
     combinatory_df = DataFrame(combinatory_data, columns=['Tags', 'Rarity', 'Operators'])
     return combinatory_df
+
+
 def call_menu(type):
     if type == 1:
         print('1 - Run a test with your tags, showing all operators')
