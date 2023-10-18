@@ -174,16 +174,9 @@ def main():
                             user_tags.remove(user_tags[-1])
                             continue
                         if user_input == '-' and len(user_tags) < 1:
-                            print('No tags to remove')
-                            print('')
-                            print('Enter to continue')
-                            input()
                             continue
                         user_input = int(user_input)
                         if user_input in user_tags:
-                            print('Tag index already taken')
-                            print('')
-                            print('Enter to continue')
                             continue
                         if -user_input in user_tags:
                             user_tags.remove(-user_input)
