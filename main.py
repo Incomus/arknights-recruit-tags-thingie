@@ -113,7 +113,7 @@ def call_menu(type=0, tags_df=None, user_tags=None):
         print('1 - Run a test with your tags, showing all operators')
         print('2 - Display all combinations')
         print('3 - Debug')
-        print('4 - Quit')
+        print('0 - Quit')
     if type == 3:
         print(tags_df[1:].reset_index(drop=True)[1:])
         print('')
@@ -133,9 +133,9 @@ def tagn_to_tag(user_tags):
 def main():
     debug = 0
     while True:
-        user_input = parse_input('Select option', ['1', '2', '3', '4'], 1)
+        user_input = parse_input('Select option', ['1', '2', '3', '0'], 1)
 
-        if user_input == '4':
+        if user_input == '0':
             break
         if user_input == '3':
             user_input = parse_input('Debug? 0/1', ['0', '1'])
