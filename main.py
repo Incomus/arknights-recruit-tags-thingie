@@ -108,14 +108,13 @@ def comb_tags(tags, operators_data, input_tags, debug=0):
     return combinatory_df
 
 def call_menu(type=0, tags_df=None, user_tags=None):
+    os.system('cls')
     if type == 1:
-        os.system('cls')
         print('1 - Run a test with your tags, showing all operators')
         print('2 - Display all combinations')
         print('3 - Debug')
         print('4 - Quit')
     if type == 3:
-        os.system('cls')
         print(tags_df[1:].reset_index(drop=True)[1:])
         print('')
         print('Choose your tag indexes, input negative index to remove tag, - to remove last tag')
