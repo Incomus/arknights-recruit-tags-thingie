@@ -1,5 +1,6 @@
 print('importing...')
 print('')
+
 from pandas import DataFrame as DataFrame
 import os
 import json
@@ -12,26 +13,18 @@ def load_json(repo_url, json_path):
         data = json.loads(response.text)
         return data
 
-git_url = 'https://github.com/Incomus/arknights-recruit-tags-thingie'
+def parse_input(prompt, valid_options, menu=0, tags_df=None, user_tags=None):
+    new = True
+    while True:
+        call_menu(menu, tags_df, user_tags)
+        if new is False:
+            print('Invalid input')
+        user_input = input(f'{prompt}\n')
+        if user_input in valid_options:
+            return user_input
+        new = False
 
-tags = load_json(git_url, 'tags.json')
-operators_data = load_json(git_url, 'operators.json')
-
-operators_data.sort()
-operators_data = [[x[0], x[1], [num + 1 for num in x[2]]] for x in operators_data]
-operators_data = [[x[0], x[1], x[2] + [0] + [1]] for x in operators_data]
-os.system('mode con: cols=100 lines=800')
-
-while True:
-    user_input = input('Debug? 0/1\n')
-    if user_input in ('1', '0'):
-        break
-    os.system('cls')
-    print('Invalid input')
-    continue
-debug = int(user_input)
-
-def comb_tags(tags, operators_data, input_tags, debug=debug):
+def comb_tags(tags, operators_data, input_tags, debug=0):
     combinatory_data = []
     tags_range = range(len(input_tags))
     tags1_range = [0, *tags_range[2:-2]]
@@ -114,126 +107,126 @@ def comb_tags(tags, operators_data, input_tags, debug=debug):
     combinatory_df = DataFrame(combinatory_data, columns=['Tags', 'Rarity', 'Operators'])
     return combinatory_df
 
-
-def call_menu(type):
+def call_menu(type=0, tags_df=None, user_tags=None):
     if type == 1:
+        os.system('cls')
         print('1 - Run a test with your tags, showing all operators')
         print('2 - Display all combinations')
-        print('3 - Quit')
-    if type == 2:
-        os.system('cls')
-        print('Robots desirable? (y/n)')
+        print('3 - Debug')
+        print('4 - Quit')
     if type == 3:
         os.system('cls')
         print(tags_df[1:].reset_index(drop=True)[1:])
         print('')
         print('Choose your tag indexes, input negative index to remove tag, - to remove last index')
         print('')
-        print('Tags taken:', user_tags[:])
+        display_tags = tagn_to_tag(user_tags)
+        print('Tags taken:', display_tags[:])
+    if type == 0:
+        pass
 
-os.system('cls')
-call_menu(1)
-while True:
-    user_input = input('Select option\n')
-    try:
-        user_input = int(user_input)
-    except ValueError:
-        os.system('cls')
-        call_menu(1)
-        print('Invalid input')
-        continue
-    if user_input == 3:
-        break
-    elif user_input == 2:
-        os.system('cls')
-        print('All non Top Operator combinations')
-        print('')
-        df = comb_tags(tags, operators_data, range(len(tags[:-2])))
-        print(df)
-        print('')
-        call_menu(1)
-        continue
-    elif user_input == 1:
-        call_menu(2)
-        while True:
-            user_input = input('Select option\n')
-            if user_input in ('y', 'n', '1', '0', ''):
-                break
-            call_menu(2)
-            print('Invalid input')
-        if user_input == 'y' or user_input == '1' or user_input == '':
-            robot_rar = 2
-        else:
-            robot_rar = -1
-        for operator_index in range(len(operators_data)):
-            if 8 in operators_data[operator_index][2]:
-                operators_data[operator_index][0] = robot_rar
-        tags_df = DataFrame(tags, columns=['Tag', 'Rarity'])
-        user_tags = []
-        call_menu(3)
-        while True:
-            while len(user_tags) < 5:
-                while True:
-                    user_input = input(f'Input tag index # {len(user_tags)+1}: \n')
-                    if user_input == '-' and len(user_tags) > 0:
-                        user_tags.remove(user_tags[-1])
-                        call_menu(3)
-                        continue
-                    if user_input == '-' and len(user_tags) < 1:
-                        call_menu(3)
-                        print('No tags to remove')
-                        continue
-                    try:
-                        user_input = int(user_input)
-                    except ValueError:
-                        call_menu(3)
-                        print('Invalid input')
-                        continue
-                    if user_input in user_tags:
-                        call_menu(3)
-                        print('Tag index already taken')
-                        continue
-                    if -user_input in user_tags:
-                        user_tags.remove(-user_input)
-                        call_menu(3)
-                        continue
-                    if user_input in range(29)[1:]:
-                        break
-                    call_menu(3)
-                    print('Invalid input')
-                user_tags.append(user_input)
-                call_menu(3)
-            os.system('cls')
-            print('Final tags:', user_tags)
-            user_tags = [num + 1 for num in user_tags]
-            user_tags.append(0)
-            user_tags.append(1)
-            user_tags.sort()
-            df = comb_tags(tags, operators_data, user_tags)
+def tagn_to_tag(user_tags):
+    display_tags = [x + 1 for x in user_tags.copy()]
+    for i, tag in enumerate(display_tags):
+        display_tags[i] = tags[tag]
+    return display_tags
+
+def main():
+    debug = 0
+    while True:
+        user_input = parse_input('Select option', ['1', '2', '3', '4'], 1)
+
+        if user_input == '4':
+            break
+        if user_input == '3':
+            user_input = parse_input('Debug? 0/1', ['0', '1'])
+            debug = int(user_input)
+            continue
+        if user_input == '2':
+            print('All non Top Operator combinations')
             print('')
-            print('Keep in mind, rarity 3 operators can only be rolled with Top Operator tag,'
-                  ' not sure about rarity 2 operators'
-                  ' and Senior Operator tag')
+            df = comb_tags(tags, operators_data, range(len(tags[:-2])), debug)
+            print(df)
             print('')
-            if df.empty:
-                print("------>We ain't found nothin'<------")
-            else:
-                print(df)
-            print('')
-            while True:
-                print('Run again with same robot rarity? (y/n)')
-                user_input = input()
-                if user_input in ('y', 'n', '1', '0', ''):
-                    break
+            print('Enter to continue')
+            input()
+            continue
+        if user_input == '1':
+            user_input = parse_input('Robots desirable? (y/n)\nSelect option', ['y', 'n', '1', '0', ''])
             if user_input == 'y' or user_input == '1' or user_input == '':
-                user_tags = []
-                call_menu(3)
-                continue
+                robot_rar = 2
             else:
+                robot_rar = -1
+            for operator_index in range(len(operators_data)):
+                if 8 in operators_data[operator_index][2]:
+                    operators_data[operator_index][0] = robot_rar
+            tags_df = DataFrame(tags, columns=['Tag'])
+            user_tags = []
+            while True:
+                while len(user_tags) < 5:
+                    while True:
+                        string_range = [str(i) for i in range(-29, 29) if i != 0]
+                        string_range.append('-')
+                        user_input = parse_input(f'Input tag index # {len(user_tags) + 1}: \n', string_range, 3,
+                                                 tags_df, user_tags)
+                        if user_input == '-' and len(user_tags) > 0:
+                            user_tags.remove(user_tags[-1])
+                            continue
+                        if user_input == '-' and len(user_tags) < 1:
+                            print('No tags to remove')
+                            print('')
+                            print('Enter to continue')
+                            input()
+                            continue
+                        user_input = int(user_input)
+                        if user_input in user_tags:
+                            print('Tag index already taken')
+                            print('')
+                            print('Enter to continue')
+                            continue
+                        if -user_input in user_tags:
+                            user_tags.remove(-user_input)
+                            continue
+                        break
+                    user_tags.append(user_input)
                 os.system('cls')
-                call_menu(1)
-                break
-    else:
-        os.system('cls')
-        call_menu(1)
-        print('invalid input')
+                display_tags = tagn_to_tag(user_tags)
+                print('Final tags:', display_tags)
+                user_tags = [num + 1 for num in user_tags]
+                user_tags.append(0)
+                user_tags.append(1)
+                user_tags.sort()
+                df = comb_tags(tags, operators_data, user_tags, debug)
+                print('')
+                print('Keep in mind, rarity 3 operators can only be rolled with Top Operator tag,'
+                      ' not sure about rarity 2 operators'
+                      ' and Senior Operator tag')
+                print('')
+                if df.empty:
+                    print("------>We ain't found nothin'<------")
+                else:
+                    print(df)
+                print('')
+                print('Enter to continue')
+                input()
+                user_input = parse_input('Run again with same robot rarity? (y/n)', ['y', 'n', '1', '0', ''])
+                if user_input == 'y' or user_input == '1' or user_input == '':
+                    user_tags = []
+                    continue
+                else:
+                    break
+
+
+git_url = 'https://github.com/Incomus/arknights-recruit-tags-thingie'
+
+tags = load_json(git_url, 'tags.json')
+operators_data = load_json(git_url, 'operators.json')
+
+operators_data.sort()
+operators_data = [[x[0], x[1], [num + 1 for num in x[2]]] for x in operators_data]
+operators_data = [[x[0], x[1], x[2] + [0] + [1]] for x in operators_data]
+os.system('mode con: cols=100 lines=800')
+
+
+if __name__ == "__main__":
+    main()
