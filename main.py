@@ -118,7 +118,7 @@ def call_menu(type=0, tags_df=None, user_tags=None):
         os.system('cls')
         print(tags_df[1:].reset_index(drop=True)[1:])
         print('')
-        print('Choose your tag indexes, input negative index to remove tag, - to remove last index')
+        print('Choose your tag indexes, input negative index to remove tag, - to remove last tag')
         print('')
         display_tags = tagn_to_tag(user_tags)
         print('Tags taken:', display_tags[:])
