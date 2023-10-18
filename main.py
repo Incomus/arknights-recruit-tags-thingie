@@ -17,9 +17,6 @@ git_url = 'https://github.com/Incomus/arknights-recruit-tags-thingie'
 tags = load_json(git_url, 'tags.json')
 operators_data = load_json(git_url, 'operators.json')
 
-print(tags)
-input()
-
 operators_data.sort()
 operators_data = [[x[0], x[1], [num + 1 for num in x[2]]] for x in operators_data]
 operators_data = [[x[0], x[1], x[2] + [0] + [1]] for x in operators_data]
