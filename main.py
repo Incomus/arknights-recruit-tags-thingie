@@ -143,6 +143,7 @@ def main():
             debug = int(user_input)
             continue
         if user_input == '2':
+            os.system('cls')
             print('All non Top Operator combinations')
             print('')
             df = comb_tags(tags, operators_data, range(len(tags[:-2])), debug)
