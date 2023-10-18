@@ -253,7 +253,7 @@ def call_menu(type):
         print('3 - Quit')
     if type == 2:
         os.system('cls')
-        print('Robots undesirable? (y/n)')
+        print('Robots desirable? (y/n)')
     if type == 3:
         os.system('cls')
         print(tags_df[1:].reset_index(drop=True)[1:])
